@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Builder - Provider Platform</title>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Using Font Awesome for icons, as seen in your screenshots -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Global Styles & Typography (Based on Screenshots) --- */
+        :root {
+            --primary-black: #212529;
+            --light-grey-bg: #f0f2f5;
+            --sidebar-bg: #f8f9fa;
+            --white-panel: #ffffff;
+            --border-color: #dee2e6;
+            --input-border: #ced4da;
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --primary-blue: #0d6efd;
+            --status-green: #198754;
+            --status-yellow: #ffc107;
+            --status-red: #dc3545;
+            --status-blue: #0dcaf0;
+            --border-radius-md: 6px;
+            --border-radius-lg: 8px;
+            --border-radius-pill: 999px; /* New for pill buttons */
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--light-grey-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar (Replicating your platform's navigation) --- */
+        .sidebar {
+            width: 230px;
+            background-color: var(--sidebar-bg);
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav li .icon {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .sidebar-nav li:hover {
+            background-color: #e9ecef;
+        }
+        
+        .sidebar-nav > li.active-parent {
+            font-weight: 600;
+            color: var(--primary-black);
+            background-color: #e9ecef;
+        }
+        
+        .sidebar-nav > li.active-parent > .icon {
+             color: var(--primary-black);
+        }
+
+        /* Active nav item style - Updated */
+        .sidebar-nav li.active {
+            font-weight: 600;
+            color: var(--primary-black);
+            border-left: 3px solid var(--primary-black); /* Changed to black */
+            background-color: #e9ecef;
+        }
+        
+        .sidebar-nav li.active .icon {
+            color: var(--primary-black);
+        }
+
+        .sidebar-nav li.coming-soon {
+            color: #adb5bd;
+            cursor: not-allowed;
+            font-style: italic;
+        }
+        
+        .sidebar-nav .nav-label {
+            padding: 20px 20px 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        
+        /* NEW: Sub-menu styles */
+        .sidebar-submenu {
+            list-style: none;
+            padding: 0 0 8px 0;
+            margin: 0;
+            background-color: #e9ecef;
+            display: none; /* Hidden by default */
+        }
+        
+        .sidebar-submenu li {
+            padding-left: 43px; /* Indent sub-items */
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        .sidebar-submenu li.active {
+            font-weight: 700;
+            color: var(--primary-black);
+            border-left: none;
+            background-color: #e9ecef;
+        }
+        
+        .sidebar-submenu li:hover {
+            background-color: #dfe3e7;
+        }
+        
+        .sidebar-nav li.active-parent + .sidebar-submenu {
+            display: block; /* Show submenu when parent is active */
+        }
+        
+        .sidebar-nav-parent > .icon.chevron {
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+        
+        .sidebar-nav-parent.active-parent > .icon.chevron {
+            transform: rotate(180deg);
+        }
+        
+        
+        /* --- Main Content Area (White panel) --- */
+        .main-content {
+            margin-left: 230px; /* Offset by sidebar width */
+            flex-grow: 1;
+            padding: 24px;
+        }
+
+        .content-wrapper {
+            background-color: var(--white-panel);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h3 .icon {
+            margin-right: 10px;
+            color: var(--primary-blue);
+        }
+
+        /* --- Configuration/Filters Section (Collapsible) --- */
+        .config-section details {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 24px;
+            background-color: var(--sidebar-bg);
+        }
+
+        .config-section summary {
+            padding: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .config-section summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .config-section summary:after {
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            transition: transform 0.2s;
+            font-size: 0.9em;
+        }
+
+        .config-section details[open] summary {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .config-section details[open] summary:after {
+            transform: rotate(180deg);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background-color: var(--white-panel);
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        }
+        
+        /* NEW: Collapsible Form Sections */
+        .form-section {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .form-section summary {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            list-style: none;
+        }
+        
+        .form-section summary::-webkit-details-marker { display: none; }
+        
+        .form-section summary:after {
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            transition: transform 0.2s;
+            font-size: 0.8em;
+            margin-left: auto;
+            color: var(--text-light);
+        }
+        
+        .form-section details[open] summary:after {
+            transform: rotate(180deg);
+        }
+
+        .form-section summary .icon {
+            margin-right: 10px;
+            color: var(--primary-blue);
+        }
+
+        /* --- Form Styles (Inputs, Labels, Textareas) --- */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--input-border);
+            border-radius: var(--border-radius-md);
+            font-size: 14px;
+            background-color: var(--white-panel);
+            box-sizing: border-box; /* Important for 100% width */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+        }
+
+        .form-group select[multiple] {
+            height: 120px;
+            padding: 10px;
+        }
+        
+        .form-group input:read-only,
+        .form-group textarea:read-only {
+            background-color: var(--sidebar-bg);
+            cursor: not-allowed;
+            color: var(--text-light);
+            border-color: var(--border-color);
+        }
+        
+        .form-note {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Grid for form content blocks */
+        .form-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 24px;
+            padding-bottom: 20px;
+        }
+        
+        /* Class to make a form group span both columns */
+        .form-group-full {
+            grid-column: 1 / -1;
+        }
+
+        /* --- Button Styles (Primary & Secondary) --- */
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 24px; /* More padding for pill shape */
+            border: 1px solid transparent;
+            border-radius: var(--border-radius-pill); /* UPDATED for pill shape */
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
+        }
+        
+        /* Secondary Button (like "Reset All") */
+        .btn-secondary {
+            background-color: var(--white-panel);
+            color: var(--primary-black);
+            border: 1px solid var(--primary-black); /* Black border */
+        }
+        .btn-secondary:hover {
+            background-color: var(--sidebar-bg);
+        }
+        
+        /* Primary Button (like "Submit" or "Export Report") */
+        .btn-primary {
+            background-color: var(--primary-black); /* Black background */
+            color: var(--white-panel);
+        }
+        .btn-primary:hover {
+            opacity: 0.85;
+        }
+        
+        .btn-danger {
+            background-color: var(--status-red);
+            color: var(--white-panel);
+        }
+        .btn-danger:hover {
+            opacity: 0.85;
+        }
+        
+        .btn-add {
+            background-color: var(--status-green);
+            color: var(--white-panel);
+        }
+        .btn-add:hover {
+            opacity: 0.85;
+        }
+        
+        /* --- Documents Page Styles --- */
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .documents-table th,
+        .documents-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        
+        .documents-table th {
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        
+        .documents-table tr:hover {
+            background-color: var(--sidebar-bg);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: var(--border-radius-pill);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.status-review {
+            background-color: var(--status-yellow);
+            color: var(--primary-black);
+        }
+        
+        .status-badge.status-approved {
+            background-color: var(--status-green);
+            color: var(--white-panel);
+        }
+        
+        .status-badge.status-cancelled {
+            background-color: var(--status-red);
+            color: var(--white-panel);
+        }
+        
+        .status-badge.status-progress {
+            background-color: var(--status-blue);
+            color: var(--white-panel);
+        }
+
+        .action-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background-color: #f0f2f5;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            background-color: var(--border-color);
+        }
+        .action-btn .fa-pencil { color: var(--primary-blue); }
+        .action-btn .fa-ban { color: var(--status-red); }
+        .action-btn .fa-eye { color: var(--text-dark); }
+        
+        /* --- Schedule Page Styles --- */
+        .schedule-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .schedule-builder-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .schedule-builder-table th,
+        .schedule-builder-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .schedule-builder-table th {
+            background-color: var(--sidebar-bg);
+            font-weight: 600;
+            padding: 12px 8px;
+        }
+        
+        .schedule-builder-table input[type="text"],
+        .schedule-builder-table textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid var(--input-border);
+            border-radius: var(--border-radius-md);
+            box-sizing: border-box; /* FIXED: Prevents overflow */
+        }
+        .schedule-builder-table textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .schedule-builder-table td:first-child { width: 8%; }
+        .schedule-builder-table td:nth-child(2) { width: 15%; }
+        .schedule-builder-table td:nth-child(3) { width: 20%; }
+        .schedule-builder-table td:nth-child(4) { width: 12%; }
+        .schedule-builder-table td:nth-child(5) { width: 35%; }
+        .schedule-builder-table td:last-child { width: 10%; text-align: center; vertical-align: middle;}
+        
+        /* --- Preview Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: var(--white-panel);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 900px; /* Widen modal for A4 page */
+            height: 80%;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover {
+            color: var(--text-dark);
+        }
+        
+        .modal-body {
+            padding: 20px; /* Give space around the page */
+            overflow-y: auto;
+            background-color: var(--light-grey-bg); /* Grey background for contrast */
+            font-family: 'Inter', sans-serif; /* Set base font for modal */
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* NEW: PDF Page Simulation */
+        .preview-page {
+            background-color: var(--white-panel);
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 2cm;
+            margin: 20px auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+            box-sizing: border-box; /* Ensure padding is included */
+        }
+        
+        /* NEW: Logo Styles */
+        .preview-logo {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .preview-logo-exoticca {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800; /* Extra bold */
+            font-size: 36px;
+            color: var(--primary-black);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .preview-logo-strapline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-light);
+            letter-spacing: 2px; /* Wide spacing */
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        
+        .modal-body h5 {
+            font-family: 'Inter', sans-serif; /* UPDATED */
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-black);
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee; /* Keep a light separator */
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .modal-body h5 .emoji {
+            font-size: 1.2em;
+            margin-right: 10px; /* More space for emoji */
+        }
+        
+        .modal-body p {
+            margin-top: 0;
+            margin-bottom: 16px;
+            white-space: pre-wrap; /* Preserves line breaks from textareas */
+            font-family: 'Inter', sans-serif; /* UPDATED */
+            font-size: 15px; /* Slightly larger for readability */
+            line-height: 1.7;
+        }
+        
+        /* NEW: Preview Table for Schedule */
+        .preview-schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .preview-schedule-table th,
+        .preview-schedule-table td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+            white-space: pre-wrap;
+        }
+        .preview-schedule-table th {
+            background-color: var(--sidebar-bg);
+            font-weight: 700;
+        }
+        
+        /* --- Custom Message Box (Replaces alert()) --- */
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .message-box {
+            background-color: var(--white-panel);
+            padding: 24px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .message-box-icon {
+            font-size: 40px;
+            color: #28a745; /* Success green */
+            margin-bottom: 16px;
+        }
+        .message-box p {
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+        .message-box-btn {
+            background-color: var(--primary-black);
+            color: var(--white-panel);
+            border-radius: var(--border-radius-pill);
+            padding: 10px 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- --- SIDEBAR --- -->
+        <nav class="sidebar">
+            <ul class="sidebar-nav">
+                <li class="nav-label">Main Menu</li>
+                <li id="nav-dashboard"><span class="icon"><i class="fa-solid fa-tachometer-alt"></i></span> Dashboard</li>
+                <li id="nav-bookings"><span class="icon"><i class="fa-solid fa-calendar-check"></i></span> Bookings</li>
+                <li id="nav-services"><span class="icon"><i class="fa-solid fa-rocket"></i></span> My Services</li>
+                <li id="nav-arrivals"><span class="icon"><i class="fa-solid fa-plane-arrival"></i></span> Arrivals</li>
+                <li id="nav-notifications"><span class="icon"><i class="fa-solid fa-bell"></i></span> Notifications <span style="background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; margin-left: auto;">5</span></li>
+                <li id="nav-feedback"><span class="icon"><i class="fa-solid fa-comments"></i></span> Customer Feedback</li>
+                
+                <!-- UPDATED SECTION -->
+                <li class="nav-label">Tools</li>
+                <!-- UPDATED: Parent Menu Item -->
+                <li id="nav-builder-parent" class="sidebar-nav-parent active-parent">
+                    <span class="icon"><i class="fa-solid fa-file-pen"></i></span> 
+                    Document Builder
+                    <span class="icon chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                </li>
+                <!-- NEW: Sub-menu -->
+                <ul class="sidebar-submenu" style="display: block;">
+                    <li id="nav-welcome-letter" class="active">Welcome Letter</li>
+                    <li id="nav-schedule">Schedule</li>
+                </ul>
+                
+                <li id="nav-documents"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Documents</li>
+                <li id="nav-billing"><span class="icon"><i class="fa-solid fa-file-invoice"></i></span> Billing</li>
+                <li class="coming-soon"><span class="icon"><i class="fa-solid fa-file-signature"></i></span> Contracts <small>(Coming Soon)</small></li>
+                <li class="coming-soon"><span class="icon"><i class="fa-solid fa-headset"></i></span> Live Chat <small>(Coming Soon)</small></li>
+            </ul>
+        </nav>
+
+        <!-- --- MAIN CONTENT --- -->
+        <main class="main-content" id="welcome-letter-page">
+            <div class="content-wrapper">
+                <h2>Create New Welcome Letter</h2>
+
+                <!-- --- 1. Configuration Section --- -->
+                <div class="config-section">
+                    <details open>
+                        <summary>Configuration</summary>
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="wl-letter-language">Language Applicable</label>
+                                <select id="wl-letter-language">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="pt">Portuguese</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="wl-letter-itineraries">Itineraries Applicable</label>
+                                <select id="wl-letter-itineraries" multiple>
+                                    <option value="N-123">N-123 (Norway Fjords)</option>
+                                    <option value="N-456">N-456 (Northern Lights)</option>
+                                    <option value="S-789">S-789 (Andalusia Tour)</option>
+                                    <option value="I-101">I-101 (Italian Dreams)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="wl-letter-partner">Local Partner Name</label>
+                                <input type="text" id="wl-letter-partner" value="Nordis Travel" readonly>
+                                <small class="form-note">Automatically populated from your provider account.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="wl-letter-schedule">Auto-upload Schedule</label>
+                                <select id="wl-letter-schedule">
+                                    <option value="60">Departure Date - 60 (d-60)</option>
+                                    <option value="30">Departure Date - 30 (d-30)</option>
+                                    <option value="15">Departure Date - 15 (d-15)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- --- 2. Content Blocks Form --- -->
+                <form id="welcome-letter-form">
+                    
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-file-lines"></i></span> Standard Content (Non-Editable)</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group form-group-full">
+                                    <label for="content-standard-intro">Introduction</label>
+                                    <textarea id="content-standard-intro" readonly>Exoticca and [Your Partner Name], our local partner, would like to share some important information to help you feel fully prepared and clarify any remaining questions, so you can enjoy your experience with total peace of mind.</textarea>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-standard-app">Exoticca App Information</label>
+                                    <textarea id="content-standard-app" readonly>If you booked your trip directly with Exoticca, this Welcome Letter serves as a complementary guide to the Exoticca: Travelers' App, available on Android and iOS.
+We recommend downloading the Exoticca app, where you can access your Exoticca Trip Summary and have all your trip details at hand for any inquiries.</textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-door-open"></i></span> Introduction & Arrival</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-airport">Arrival Airport</label>
+                                    <input type="text" id="content-airport" placeholder="e.g., Oslo Airport">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-arrival-transfer">Arrival Transfer Instructions</label>
+                                    <input type="text" id="content-arrival-transfer" placeholder="e.g., Upon your arrival... the transfer to the hotel is on your own.">
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-transport-details">Primary Transport Details</label>
+                                    <textarea id="content-transport-details" placeholder="e.g., You can take the Flytoget express train to Oslo Central Station. The train ticket is included..."></textarea>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-alt-transport">Alternative Transport</label>
+                                    <textarea id="content-alt-transport" placeholder="e.g., If your flight arrives very early... you can take a taxi from the designated taxi stand..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-user-group"></i></span> Guide & Contacts</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-guide-meeting">Guide Meeting Information</label>
+                                    <textarea id="content-guide-meeting" placeholder="e.g., You will meet your guide the day after your arrival in the hotel lobby..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-contacts">Contacts in Destination</label>
+                                    <textarea id="content-contacts" placeholder="e.g., If you have any questions... The numbers will be provided in your Trip Summary..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-bus-simple"></i></span> Trip Transportation</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-trip-type">Your Trip Details</label>
+                                    <textarea id="content-trip-type" placeholder="e.g., You've booked an escorted trip, meaning a guide will be with you..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-internal-transport">Internal Transportation</label>
+                                    <textarea id="content-internal-transport" placeholder="e.g., The itinerary includes well-organized transport by bus. Each road trip includes..."></textarea>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="content-return-transfer">Return Transfer to Airport</label>
+                                    <textarea id="content-return-transfer" placeholder="e.g., For your return trip, transportation to the airport is on your own. You can take..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-transport-disclaimer">Transport Disclaimers (Optional)</label>
+                                    <textarea id="content-transport-disclaimer" placeholder="e.g., During the summer, some roads may be under construction. This could cause slight delays..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-hotel"></i></span> Hotels</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-checkin">Check-in Time</label>
+                                    <input type="text" id="content-checkin" placeholder="e.g., Check-in at hotels is generally from 3:00 PM onwards.">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-amenities">Amenities Note (e.g., A/C)</label>
+                                    <input type="text" id="content-amenities" placeholder="e.g., Air conditioning is typically not available in hotels in Norway...">
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-smoking-policy">Smoking Policy</label>
+                                    <input type="text" id="content-smoking-policy" placeholder="e.g., Please note that all rooms are non-smoking rooms...">
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-money-bill-wave"></i></span> Currency & Payments</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-currency">Local Currency</label>
+                                    <input type="text" id="content-currency" placeholder="e.g., The local currency in Norway is the Norwegian Krone (NOK).">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-tipping">Tipping Recommendations</label>
+                                    <input type="text" id="content-tipping" placeholder="e.g., €3 per person per day for the driver and €5... for the tour leader.">
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-payment-advice">Payment & ATM Advice</label>
+                                    <textarea id="content-payment-advice" placeholder="e.g., Credit cards are widely accepted... ATMs are widely available..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-cloud-sun"></i></span> Weather & Packing</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-weather-s1">Weather: Summer Region 1</label>
+                                    <input type="text" id="content-weather-s1" placeholder="e.g., Southern Norway: Mild, with temperatures between 10°C and 25°C...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-weather-s2">Weather: Summer Region 2</label>
+                                    <input type="text" id="content-weather-s2" placeholder="e.g., Northern Norway: Cooler, with temperatures from 5°C to 15°C...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-weather-w1">Weather: Winter Region 1</label>
+                                    <input type="text" id="content-weather-w1" placeholder="e.g., Southern Norway: Cold but milder temperatures, from -1°C to 4°C...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-weather-w2">Weather: Winter Region 2</label>
+                                    <input type="text" id="content-weather-w2" placeholder="e.g., Northern Norway: Much colder, from -10°C to -20°C...">
+                                </div>
+                                
+                                <div class="form-group form-group-full">
+                                    <label for="content-pack-summer">Packing List: Summer</label>
+                                    <textarea id="content-pack-summer" placeholder="Enter list items, one per line..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-pack-spring">Packing List: Spring</label>
+                                    <textarea id="content-pack-spring" placeholder="Enter list items, one per line..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-pack-winter">Packing List: Winter</label>
+                                    <textarea id="content-pack-winter" placeholder="Enter list items, one per line..."></textarea>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label for="content-pack-year-round">Packing List: Year-Round</label>
+                                    <textarea id="content-pack-year-round" placeholder="Enter list items, one per line..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- UPDATED: Collapsible Section -->
+                    <div class="form-section">
+                        <details open>
+                            <summary><span class="icon"><i class="fa-solid fa-utensils"></i></span> Language & Gastronomy</summary>
+                            <div class="form-content-grid">
+                                <div class="form-group">
+                                    <label for="content-lang">Language & English Proficiency</label>
+                                    <textarea id="content-lang" placeholder="e.g., The local language is Norwegian. English is widely spoken."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-lang-words">Useful Words</label>
+                                    <textarea id="content-lang-words" placeholder="e.g., Hello: Hallo&#10;Thank you: Takk&#10;Water: Vann"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-meals">Included Meals</label>
+                                    <textarea id="content-meals" placeholder="e.g., Please note that breakfast will be provided by the hotels. Lunches are not included."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-diet">Dietary Restrictions Note</label>
+                                    <textarea id="content-diet" placeholder="e.g., If you have dietary restrictions, inform restaurants or hotels in advance."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-dishes">Typical Dishes</label>
+                                    <textarea id="content-dishes" placeholder="e.g., Salmon: A staple in cuisine...&#10;Fårikål: Known as the national dish..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content-beverages">Local Beverages</label>
+                                    <textarea id="content-beverages" placeholder="e.g., Explore local options like aquavit, a traditional spirit..."></textarea>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- --- 3. Action Buttons --- -->
+                    <div class="button-container">
+                        <button type="button" id="preview-wl-btn" class="btn btn-secondary">Preview Welcome Letter</button>
+                        <button type="submit" id="submit-wl-btn" class="btn btn-primary">Send for Approval</button>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+        
+        <!-- --- NEW: SCHEDULE PAGE --- -->
+        <main class="main-content" id="schedule-page" style="display: none;">
+            <div class="content-wrapper">
+                <h2>Create New Schedule</h2>
+
+                <!-- --- 1. Configuration Section --- -->
+                <div class="config-section">
+                    <details open>
+                        <summary>Configuration</summary>
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="sched-letter-language">Language Applicable</label>
+                                <select id="sched-letter-language">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="pt">Portuguese</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sched-letter-itineraries">Itineraries Applicable</label>
+                                <select id="sched-letter-itineraries" multiple>
+                                    <option value="N-123">N-123 (Norway Fjords)</option>
+                                    <option value="N-456">N-456 (Northern Lights)</option>
+                                    <option value="S-789">S-789 (Andalusia Tour)</option>
+                                    <option value="I-101">I-101 (Italian Dreams)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sched-letter-partner">Local Partner Name</label>
+                                <input type="text" id="sched-letter-partner" value="Nordis Travel" readonly>
+                                <small class="form-note">Automatically populated from your provider account.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="sched-letter-schedule">Auto-upload Schedule</label>
+                                <select id="sched-letter-schedule">
+                                    <option value="60">Departure Date - 60 (d-60)</option>
+                                    <option value="30">Departure Date - 30 (d-30)</option>
+                                    <option value="15">Departure Date - 15 (d-15)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                
+                <!-- --- 2. Schedule Builder Form --- -->
+                <form id="schedule-form">
+                    <h3><span class="icon"><i class="fa-solid fa-calendar-days"></i></span> Daily Itinerary</h3>
+                    <div class="schedule-table-wrapper">
+                        <table class="schedule-builder-table">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>City</th>
+                                    <th>Pickup Place</th>
+                                    <th>Pickup Time</th>
+                                    <th>Summary of the Day</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-table-body">
+                                <!-- Rows will be added here by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="button-container" style="justify-content: flex-start; padding-top: 20px; border-top: none;">
+                         <button type="button" id="add-day-btn" class="btn btn-add"><i class="fa-solid fa-plus"></i> Add Day</button>
+                    </div>
+
+                    <!-- --- 3. Action Buttons --- -->
+                    <div class="button-container">
+                        <button type="button" id="preview-schedule-btn" class="btn btn-secondary">Preview Schedule</button>
+                        <button type="submit" id="submit-schedule-btn" class="btn btn-primary">Send for Approval</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        
+        <!-- --- DOCUMENTS PAGE --- -->
+        <main class="main-content" id="documents-page" style="display: none;">
+            <div class="content-wrapper">
+                <h2>My Documents</h2>
+                
+                <table class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Itineraries</th>
+                            <th>Language</th>
+                            <th>Status</th>
+                            <th>Last Update</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Norway Welcome Letter</strong></td>
+                            <td>N-123, N-456</td>
+                            <td>English</td>
+                            <td><span class="status-badge status-review">In Review</span></td>
+                            <td>2025-10-31</td>
+                            <td class="action-btn-group">
+                                <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
+                                <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Spain Welcome Letter</strong></td>
+                            <td>S-789</td>
+                            <td>Spanish</td>
+                            <td><span class="status-badge status-approved">Approved</span></td>
+                            <td>2025-10-28</td>
+                            <td class="action-btn-group">
+                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Italy Itinerary Notes</strong></td>
+                            <td>I-101</td>
+                            <td>English</td>
+                            <td><span class="status-badge status-progress">In Progress</span></td>
+                            <td>2025-10-30</td>
+                            <td class="action-btn-group">
+                                <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td><strong>Norway Welcome Letter (Old)</strong></td>
+                            <td>N-123</td>
+                            <td>English</td>
+                            <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                            <td>2025-09-15</td>
+                            <td class="action-btn-group">
+                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+        </main>
+    </div>
+    
+    <!-- --- PREVIEW MODAL --- -->
+    <div class="modal-overlay" id="preview-modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="preview-modal-title">Welcome Letter Preview</h4>
+                <button class="modal-close-btn" id="modal-close-btn" type="button">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                <!-- Content will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- --- CUSTOM MESSAGE BOX --- -->
+    <div class="message-box-overlay" id="message-box-overlay">
+        <div class="message-box">
+            <div class="message-box-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <p id="message-box-text">Sent for approval. See your documents in the 'Documents' section.</p>
+            <button class="btn message-box-btn" id="message-box-close-btn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Page Navigation ---
+            const navBuilderParent = document.getElementById('nav-builder-parent');
+            const navSubmenu = document.querySelector('.sidebar-submenu');
+            const navWelcomeLetter = document.getElementById('nav-welcome-letter');
+            const navSchedule = document.getElementById('nav-schedule');
+            const navDocuments = document.getElementById('nav-documents');
+            
+            const pageWelcomeLetter = document.getElementById('welcome-letter-page');
+            const pageSchedule = document.getElementById('schedule-page');
+            const pageDocuments = document.getElementById('documents-page');
+            
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav > li');
+            const sidebarSubLinks = document.querySelectorAll('.sidebar-submenu li');
+
+            function showPage(pageToShow) {
+                // Hide all main pages
+                pageWelcomeLetter.style.display = 'none';
+                pageSchedule.style.display = 'none';
+                pageDocuments.style.display = 'none';
+                
+                // Remove active class from all nav items
+                sidebarLinks.forEach(link => link.classList.remove('active', 'active-parent'));
+                sidebarSubLinks.forEach(link => link.classList.remove('active'));
+                navSubmenu.style.display = 'none';
+                
+                // Show the requested page and set its nav item to active
+                if (pageToShow === 'welcome-letter') {
+                    pageWelcomeLetter.style.display = 'block';
+                    navBuilderParent.classList.add('active-parent');
+                    navSubmenu.style.display = 'block';
+                    navWelcomeLetter.classList.add('active');
+                } else if (pageToShow === 'schedule') {
+                    pageSchedule.style.display = 'block';
+                    navBuilderParent.classList.add('active-parent');
+                    navSubmenu.style.display = 'block';
+                    navSchedule.classList.add('active');
+                } else if (pageToShow === 'documents') {
+                    pageDocuments.style.display = 'block';
+                    navDocuments.classList.add('active');
+                }
+            }
+
+            navBuilderParent.addEventListener('click', () => {
+                // This just toggles the sub-menu if it's already on a child page
+                if (navBuilderParent.classList.contains('active-parent')) {
+                    navSubmenu.style.display = navSubmenu.style.display === 'block' ? 'none' : 'block';
+                    navBuilderParent.classList.toggle('active-parent'); // Visual toggle
+                } else {
+                    // If clicking from another page, default to welcome letter
+                    showPage('welcome-letter');
+                }
+            });
+            
+            navWelcomeLetter.addEventListener('click', (e) => {
+                 e.stopPropagation(); // Prevent parent click
+                 showPage('welcome-letter');
+            });
+            navSchedule.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent parent click
+                showPage('schedule');
+            });
+            navDocuments.addEventListener('click', () => showPage('documents'));
+            
+            // --- Modal Elements ---
+            const modalOverlay = document.getElementById('preview-modal-overlay');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalBody = document.getElementById('modal-body-content');
+            const modalTitle = document.getElementById('preview-modal-title');
+            
+            // --- Message Box Elements ---
+            const messageOverlay = document.getElementById('message-box-overlay');
+            const messageCloseBtn = document.getElementById('message-box-close-btn');
+
+            // --- Function to close Preview Modal ---
+            function closeModal() {
+                modalOverlay.style.display = 'none';
+            }
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+            
+            // --- Function to show Message Box ---
+            function showMessage(text, callback) {
+                document.getElementById('message-box-text').textContent = text;
+                messageOverlay.style.display = 'flex';
+                
+                // Handle OK button click
+                messageCloseBtn.onclick = function() {
+                    closeMessage();
+                    if (callback) callback();
+                };
+            }
+            
+            // --- Function to close Message Box ---
+            function closeMessage() {
+                messageOverlay.style.display = 'none';
+                messageCloseBtn.onclick = null; // Clear old callback
+            }
+            messageOverlay.addEventListener('click', function(e) {
+                if (e.target === messageOverlay) {
+                    closeMessage();
+                    if (messageCloseBtn.onclick) messageCloseBtn.onclick();
+                }
+            });
+            
+            // --- WELCOME LETTER LOGIC ---
+            (function() {
+                const previewBtn_WL = document.getElementById('preview-wl-btn');
+                const form_WL = document.getElementById('welcome-letter-form');
+                
+                const fieldMap_WL = {
+                    'content-arrival-transfer': '✈️ Arrival at Destination',
+                    'content-transport-details': '🚆 Transport to Hotel',
+                    'content-alt-transport': '🚕 Alternative Transport',
+                    'content-guide-meeting': '🤝 Meeting Your Guide',
+                    'content-contacts': '📱 Contacts in Destination',
+                    'content-trip-type': '🗺️ Your Trip',
+                    'content-internal-transport': '🚌 Transportation',
+                    'content-return-transfer': '🛫 Return to Airport',
+                    'content-transport-disclaimer': '🚧 Transport Disclaimer',
+                    'content-checkin': '🏨 Hotels',
+                    'content-amenities': '💨 Hotel Amenities',
+                    'content-smoking-policy': '🚭 Hotel Policy',
+                    'content-currency': '💶 Currency and Payments',
+                    'content-payment-advice': '💳 Payment Advice',
+                    'content-tipping': '🪙 Tipping',
+                    'content-weather-s1': '☀️ Weather',
+                    'content-pack-summer': '🧳 Packing List: Summer',
+                    'content-pack-spring': '🧥 Packing List: Spring',
+                    'content-pack-winter': '🧣 Packing List: Winter',
+                    'content-pack-year-round': '🎒 Packing List: Year-Round',
+                    'content-lang': '🗣️ Language',
+                    'content-lang-words': '💬 Useful Words',
+                    'content-meals': '🍽️ Gastronomy',
+                    'content-diet': '🥬 Dietary Needs',
+                    'content-dishes': '🥘 Typical Dishes',
+                    'content-beverages': '🍷 Local Beverages'
+                };
+
+                previewBtn_WL.addEventListener('click', function() {
+                    modalTitle.textContent = "Welcome Letter Preview";
+                    modalBody.innerHTML = ''; // Clear everything first
+                    const partnerName = document.getElementById('wl-letter-partner').value || '[Your Partner Name]';
+                    
+                    let pageHTML = '<div class="preview-page">';
+                    pageHTML += `
+                        <div class="preview-logo">
+                            <div class="preview-logo-exoticca">exoticca</div>
+                            <div class="preview-logo-strapline">extraordinary travel crafters</div>
+                        </div>
+                    `;
+
+                    let introText = document.getElementById('content-standard-intro').value;
+                    introText = introText.replace('[Your Partner Name]', partnerName);
+                    pageHTML += `<h5><span class="emoji">👋</span>Dear Traveler,</h5><p>${introText}</p>`;
+                    
+                    for (const id in fieldMap_WL) {
+                        const element = document.getElementById(id);
+                        if (element && element.value) {
+                            let title = fieldMap_WL[id];
+                            let content = element.value;
+                            
+                            if (id === 'content-weather-s1') {
+                                const s2 = document.getElementById('content-weather-s2').value;
+                                const w1 = document.getElementById('content-weather-w1').value;
+                                const w2 = document.getElementById('content-weather-w2').value;
+                                content += s2 ? `\n${s2}` : '';
+                                if (w1 || w2) {
+                                    content += `\n\n<strong>Winter:</strong>\n`
+                                    content += w1 ? `${w1}\n` : '';
+                                    content += w2 ? `${w2}` : '';
+                                }
+                            }
+                            if (id === 'content-weather-s2' || id === 'content-weather-w1' || id === 'content-weather-w2') continue;
+                            
+                            let parts = title.split(' ');
+                            let emoji = parts.shift();
+                            let text = parts.join(' ');
+                            pageHTML += `<h5><span class="emoji">${emoji}</span>${text}</h5><p>${content}</p>`;
+                        }
+                    }
+                    
+                    let appText = document.getElementById('content-standard-app').value;
+                    pageHTML += `<h5><span class="emoji">📲</span>Exoticca Traveler's App</h5><p>${appText}</p>`;
+                    pageHTML += `<br><p>We hope you have a wonderful time exploring!</p><p><strong>Exoticca & ${partnerName}</strong></p>`;
+                    pageHTML += '</div>';
+                    
+                    modalBody.innerHTML = pageHTML;
+                    modalOverlay.style.display = 'flex';
+                });
+                
+                form_WL.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    showMessage("Sent for approval. See your documents in the 'Documents' section.", function() {
+                        showPage('documents'); 
+                    });
+                    form_WL.reset();
+                    document.getElementById('wl-letter-partner').value = "Nordis Travel";
+                    document.getElementById('content-standard-intro').value = "Exoticca and [Your Partner Name], our local partner, would like toS share some important information to help you feel fully prepared and clarify any remaining questions, so you can enjoy your experience with total peace of mind.";
+                    document.getElementById('content-standard-app').value = "If you booked your trip directly with Exoticca, this Welcome Letter serves as a complementary guide to the Exoticca: Travelers' App, available on Android and iOS.\nWe recommend downloading the Exoticca app, where you can access your Exoticca Trip Summary and have all your trip details at hand for any inquiries.";
+                    // Open all details sections
+                    document.querySelectorAll('#welcome-letter-page details').forEach(d => d.open = true);
+                });
+            })();
+            
+            // --- SCHEDULE PAGE LOGIC ---
+            (function() {
+                const addDayBtn = document.getElementById('add-day-btn');
+                const tableBody = document.getElementById('schedule-table-body');
+                const form_Schedule = document.getElementById('schedule-form');
+                const previewBtn_Schedule = document.getElementById('preview-schedule-btn');
+                let dayCounter = 0;
+                
+                function addDayRow() {
+                    dayCounter++;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><input type="text" class="day-input" value="Day ${dayCounter}"></td>
+                        <td><input type="text" class="city-input" placeholder="e.g., Oslo"></td>
+                        <td><input type="text" class="pickup-place-input" placeholder="e.g., Hotel Lobby"></td>
+                        <td><input type="text" class="pickup-time-input" placeholder="e.g., 09:00 AM"></td>
+                        <td><textarea class="summary-input" placeholder="Summary of activities..."></textarea></td>
+                        <td><button type="button" class="btn btn-danger remove-day-btn"><i class="fa-solid fa-trash"></i></button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+                
+                addDayBtn.addEventListener('click', addDayRow);
+                
+                // Event delegation for remove buttons
+                tableBody.addEventListener('click', function(e) {
+                    if (e.target && (e.target.classList.contains('remove-day-btn') || e.target.closest('.remove-day-btn'))) {
+                        e.target.closest('tr').remove();
+                        // Renumber days
+                        dayCounter = 0;
+                        tableBody.querySelectorAll('.day-input').forEach(input => {
+                            dayCounter++;
+                            input.value = `Day ${dayCounter}`;
+                        });
+                    }
+                });
+                
+                // Add one day by default
+                addDayRow();
+
+                previewBtn_Schedule.addEventListener('click', function() {
+                    modalTitle.textContent = "Schedule Preview";
+                    modalBody.innerHTML = ''; // Clear everything first
+                    const partnerName = document.getElementById('sched-letter-partner').value || '[Your Partner Name]';
+                    
+                    let pageHTML = '<div class="preview-page">';
+                    pageHTML += `
+                        <div class="preview-logo">
+                            <div class="preview-logo-exoticca">exoticca</div>
+                            <div class="preview-logo-strapline">extraordinary travel crafters</div>
+                        </div>
+                    `;
+                    pageHTML += `<h5><span class="emoji">🗓️</span> Daily Schedule</h5>`;
+                    
+                    // Build table
+                    pageHTML += '<table class="preview-schedule-table"><thead><tr>';
+                    pageHTML += '<th>Day</th><th>City</th><th>Pickup Place</th><th>Pickup Time</th><th>Summary</th>';
+                    pageHTML += '</tr></thead><tbody>';
+                    
+                    tableBody.querySelectorAll('tr').forEach(row => {
+                        const day = row.querySelector('.day-input').value;
+                        const city = row.querySelector('.city-input').value;
+                        const place = row.querySelector('.pickup-place-input').value;
+                        const time = row.querySelector('.pickup-time-input').value;
+                        const summary = row.querySelector('.summary-input').value;
+                        
+                        pageHTML += '<tr>';
+                        pageHTML += `<td><strong>${day}</strong></td>`;
+                        pageHTML += `<td>${city}</td>`;
+                        pageHTML += `<td>${place}</td>`;
+                        pageHTML += `<td>${time}</td>`;
+                        pageHTML += `<td>${summary}</td>`;
+                        pageHTML += '</tr>';
+                    });
+                    
+                    pageHTML += '</tbody></table>';
+                    pageHTML += `<br><p>We hope you have a wonderful time exploring!</p><p><strong>Exoticca & ${partnerName}</strong></p>`;
+                    pageHTML += '</div>';
+                    
+                    modalBody.innerHTML = pageHTML;
+                    modalOverlay.style.display = 'flex';
+                });
+                
+                form_Schedule.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    showMessage("Sent for approval. See your documents in the 'Documents' section.", function() {
+                        showPage('documents'); 
+                    });
+                    form_Schedule.reset();
+                    tableBody.innerHTML = '';
+                    dayCounter = 0;
+                    addDayRow();
+                    document.getElementById('sched-letter-partner').value = "Nordis Travel";
+                });
+
+            })();
+
+        });
+    </script>
+
+</body>
+</html>
+
