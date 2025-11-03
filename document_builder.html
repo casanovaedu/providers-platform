@@ -14,6 +14,8 @@
         /* --- Global Styles & Typography (Based on Screenshots) --- */
         :root {
             --primary-black: #212529;
+            --header-black: #121212;
+            --header-height: 64px; /* NEW */
             --light-grey-bg: #f0f2f5;
             --sidebar-bg: #f8f9fa;
             --white-panel: #ffffff;
@@ -22,13 +24,14 @@
             --text-dark: #343a40;
             --text-light: #6c757d;
             --primary-blue: #0d6efd;
+            --provider-green: #00b67a; /* NEW */
             --status-green: #198754;
             --status-yellow: #ffc107;
             --status-red: #dc3545;
             --status-blue: #0dcaf0;
             --border-radius-md: 6px;
             --border-radius-lg: 8px;
-            --border-radius-pill: 999px; /* New for pill buttons */
+            --border-radius-pill: 999px; 
         }
 
         body {
@@ -37,7 +40,91 @@
             margin: 0;
             padding: 0;
             color: var(--text-dark);
+            /* Add padding-top to body to account for fixed header */
+            padding-top: var(--header-height);
         }
+
+        /* --- NEW: Full Width Header --- */
+        .page-header {
+            background-color: var(--header-black);
+            color: white;
+            height: var(--header-height);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1010;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-logo-exoticca {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800; 
+            font-size: 32px;
+            color: white;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        
+        .header-logo-badge {
+            background-color: var(--provider-green);
+            color: var(--header-black);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: var(--border-radius-md);
+            margin-left: 12px;
+            text-transform: uppercase;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .header-search {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: var(--border-radius-pill);
+            padding: 8px 16px;
+            font-size: 14px;
+            min-width: 250px;
+        }
+        .header-search::placeholder {
+            color: #aaa;
+        }
+        
+        .header-icon {
+            font-size: 20px;
+            color: #eee;
+            cursor: pointer;
+        }
+        
+        .header-user-profile {
+            background-color: var(--provider-green);
+            color: var(--header-black);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* --- End Header --- */
 
         /* --- Main Layout --- */
         .container {
@@ -49,18 +136,27 @@
         .sidebar {
             width: 230px;
             background-color: var(--sidebar-bg);
-            padding: 20px 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             position: fixed;
-            height: 100%;
-            overflow-y: auto;
+            /* UPDATED: Position below header */
+            top: var(--header-height); 
+            left: 0;
+            height: calc(100vh - var(--header-height)); /* Full height minus header */
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border-right: 1px solid var(--border-color);
         }
+        
+        /* REMOVED .sidebar-header */
 
         .sidebar-nav {
             list-style: none;
-            padding: 0;
+            padding: 20px 0; /* Add padding to top */
             margin: 0;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
         .sidebar-nav li {
@@ -166,6 +262,8 @@
             margin-left: 230px; /* Offset by sidebar width */
             flex-grow: 1;
             padding: 24px;
+            /* Remove body padding-top, as main-content is the scrolling part */
+            /* padding-top: calc(var(--header-height) + 24px); */ 
         }
 
         .content-wrapper {
@@ -724,10 +822,31 @@
     </style>
 </head>
 <body>
+    
+    <!-- NEW: Full Width Header -->
+    <header class="page-header">
+        <div class="header-logo">
+            <!-- 
+                Placeholder logo. 
+                Replace this div with your <img> tag when you have a hosted URL.
+                e.g., <img src="https://your-url.com/logo.png" alt="Exoticca Logo" height="30">
+            -->
+            <div class="header-logo-exoticca">exoticca</div>
+            <span class="header-logo-badge">providers</span>
+        </div>
+        
+        <div class="header-actions">
+            <input type="text" class="header-search" placeholder="Booking">
+            <i class="fa-solid fa-bell header-icon"></i>
+            <div class="header-user-profile">ED</div>
+        </div>
+    </header>
 
     <div class="container">
         <!-- --- SIDEBAR --- -->
         <nav class="sidebar">
+            <!-- REMOVED Sidebar Header -->
+            
             <ul class="sidebar-nav">
                 <li class="nav-label">Main Menu</li>
                 <li id="nav-dashboard"><span class="icon"><i class="fa-solid fa-tachometer-alt"></i></span> Dashboard</li>
@@ -1392,7 +1511,7 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     });
                     form_WL.reset();
                     document.getElementById('wl-letter-partner').value = "Nordis Travel";
-                    document.getElementById('content-standard-intro').value = "Exoticca and [Your Partner Name], our local partner, would like toS share some important information to help you feel fully prepared and clarify any remaining questions, so you can enjoy your experience with total peace of mind.";
+                    document.getElementById('content-standard-intro').value = "Exoticca and [Your Partner Name], our local partner, would like to share some important information to help you feel fully prepared and clarify any remaining questions, so you can enjoy your experience with total peace of mind.";
                     document.getElementById('content-standard-app').value = "If you booked your trip directly with Exoticca, this Welcome Letter serves as a complementary guide to the Exoticca: Travelers' App, available on Android and iOS.\nWe recommend downloading the Exoticca app, where you can access your Exoticca Trip Summary and have all your trip details at hand for any inquiries.";
                     // Open all details sections
                     document.querySelectorAll('#welcome-letter-page details').forEach(d => d.open = true);
