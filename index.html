@@ -15,7 +15,7 @@
         :root {
             --primary-black: #212529;
             --header-black: #121212;
-            --header-height: 64px; /* NEW */
+            --header-height: 64px; 
             --light-grey-bg: #f0f2f5;
             --sidebar-bg: #f8f9fa;
             --white-panel: #ffffff;
@@ -24,7 +24,7 @@
             --text-dark: #343a40;
             --text-light: #6c757d;
             --primary-blue: #0d6efd;
-            --provider-green: #00b67a; /* NEW */
+            --provider-green: #00b67a; 
             --status-green: #198754;
             --status-yellow: #ffc107;
             --status-red: #dc3545;
@@ -40,11 +40,10 @@
             margin: 0;
             padding: 0;
             color: var(--text-dark);
-            /* Add padding-top to body to account for fixed header */
             padding-top: var(--header-height);
         }
 
-        /* --- NEW: Full Width Header --- */
+        /* --- Full Width Header --- */
         .page-header {
             background-color: var(--header-black);
             color: white;
@@ -124,7 +123,6 @@
             font-size: 14px;
             cursor: pointer;
         }
-        /* --- End Header --- */
 
         /* --- Main Layout --- */
         .container {
@@ -132,16 +130,15 @@
             min-height: 100vh;
         }
 
-        /* --- Sidebar (Replicating your platform's navigation) --- */
+        /* --- Sidebar --- */
         .sidebar {
             width: 230px;
             background-color: var(--sidebar-bg);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             position: fixed;
-            /* UPDATED: Position below header */
             top: var(--header-height); 
             left: 0;
-            height: calc(100vh - var(--header-height)); /* Full height minus header */
+            height: calc(100vh - var(--header-height));
             z-index: 10;
             display: flex;
             flex-direction: column;
@@ -149,11 +146,9 @@
             border-right: 1px solid var(--border-color);
         }
         
-        /* REMOVED .sidebar-header */
-
         .sidebar-nav {
             list-style: none;
-            padding: 20px 0; /* Add padding to top */
+            padding: 20px 0; 
             margin: 0;
             overflow-y: auto;
             flex-grow: 1;
@@ -191,11 +186,10 @@
              color: var(--primary-black);
         }
 
-        /* Active nav item style - Updated */
         .sidebar-nav li.active {
             font-weight: 600;
             color: var(--primary-black);
-            border-left: 3px solid var(--primary-black); /* Changed to black */
+            border-left: 3px solid var(--primary-black); 
             background-color: #e9ecef;
         }
         
@@ -217,17 +211,16 @@
             color: var(--text-light);
         }
         
-        /* NEW: Sub-menu styles */
         .sidebar-submenu {
             list-style: none;
             padding: 0 0 8px 0;
             margin: 0;
             background-color: #e9ecef;
-            display: none; /* Hidden by default */
+            display: none; 
         }
         
         .sidebar-submenu li {
-            padding-left: 43px; /* Indent sub-items */
+            padding-left: 43px; 
             font-weight: 500;
             font-size: 13px;
         }
@@ -244,7 +237,7 @@
         }
         
         .sidebar-nav li.active-parent + .sidebar-submenu {
-            display: block; /* Show submenu when parent is active */
+            display: block; 
         }
         
         .sidebar-nav-parent > .icon.chevron {
@@ -256,14 +249,11 @@
             transform: rotate(180deg);
         }
         
-        
-        /* --- Main Content Area (White panel) --- */
+        /* --- Main Content Area --- */
         .main-content {
-            margin-left: 230px; /* Offset by sidebar width */
+            margin-left: 230px; 
             flex-grow: 1;
             padding: 24px;
-            /* Remove body padding-top, as main-content is the scrolling part */
-            /* padding-top: calc(var(--header-height) + 24px); */ 
         }
 
         .content-wrapper {
@@ -272,12 +262,18 @@
             padding: 24px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
 
         h2 {
             font-size: 24px;
             font-weight: 600;
-            margin-top: 0;
-            margin-bottom: 24px;
+            margin: 0;
         }
         
         h3 {
@@ -296,7 +292,7 @@
             color: var(--primary-blue);
         }
 
-        /* --- Configuration/Filters Section (Collapsible) --- */
+        /* --- Configuration/Filters Section --- */
         .config-section details {
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius-lg);
@@ -344,7 +340,85 @@
             border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
         }
         
-        /* NEW: Collapsible Form Sections */
+        /* NEW: Booking Filter Grid */
+        .booking-filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            background-color: var(--white-panel);
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        }
+        
+        /* NEW: Toggle Switch Styles */
+        .form-group-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* grid-column: span 1; */
+        }
+        .form-group-toggle label {
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: var(--primary-black);
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+        
+        /* NEW: Date input with icon */
+        .form-group-date {
+            position: relative;
+        }
+        .form-group-date .fa-calendar {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(25%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+        .form-group-date input {
+            padding-right: 30px;
+        }
+        
+        /* Collapsible Form Sections */
         .form-section {
             border-bottom: 1px solid var(--border-color);
         }
@@ -367,7 +441,7 @@
         .form-section summary::-webkit-details-marker { display: none; }
         
         .form-section summary:after {
-            content: '\f078'; /* Font Awesome chevron-down */
+            content: '\f078'; 
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             transition: transform 0.2s;
@@ -406,7 +480,7 @@
             border-radius: var(--border-radius-md);
             font-size: 14px;
             background-color: var(--white-panel);
-            box-sizing: border-box; /* Important for 100% width */
+            box-sizing: border-box; 
             transition: border-color 0.2s, box-shadow 0.2s;
             font-family: inherit;
         }
@@ -443,7 +517,6 @@
             resize: vertical;
         }
         
-        /* Grid for form content blocks */
         .form-content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -451,12 +524,11 @@
             padding-bottom: 20px;
         }
         
-        /* Class to make a form group span both columns */
         .form-group-full {
             grid-column: 1 / -1;
         }
 
-        /* --- Button Styles (Primary & Secondary) --- */
+        /* --- Button Styles --- */
         .button-container {
             display: flex;
             justify-content: flex-end;
@@ -465,30 +537,38 @@
             border-top: 1px solid var(--border-color);
             padding-top: 20px;
         }
+        /* NEW: Filter button container */
+        .filter-button-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 10px;
+        }
 
         .btn {
-            padding: 10px 24px; /* More padding for pill shape */
+            padding: 10px 24px; 
             border: 1px solid transparent;
-            border-radius: var(--border-radius-pill); /* UPDATED for pill shape */
+            border-radius: var(--border-radius-pill); 
             font-weight: 600;
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
         }
         
-        /* Secondary Button (like "Reset All") */
         .btn-secondary {
             background-color: var(--white-panel);
             color: var(--primary-black);
-            border: 1px solid var(--primary-black); /* Black border */
+            border: 1px solid var(--primary-black); 
         }
         .btn-secondary:hover {
             background-color: var(--sidebar-bg);
         }
         
-        /* Primary Button (like "Submit" or "Export Report") */
         .btn-primary {
-            background-color: var(--primary-black); /* Black background */
+            background-color: var(--primary-black); 
             color: var(--white-panel);
         }
         .btn-primary:hover {
@@ -511,30 +591,50 @@
             opacity: 0.85;
         }
         
-        /* --- Documents Page Styles --- */
-        .documents-table {
+        /* NEW: Link-style button (for Reset All) */
+        .btn-link {
+            background: none;
+            border: none;
+            color: var(--primary-black);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- Data Table Styles (Used by Documents & Bookings) --- */
+        .data-table-wrapper {
             width: 100%;
-            border-collapse: collapse;
+            overflow-x: auto;
             margin-top: 20px;
         }
         
-        .documents-table th,
-        .documents-table td {
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th,
+        .data-table td {
             padding: 16px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
             font-size: 14px;
             vertical-align: middle;
+            white-space: nowrap;
         }
         
-        .documents-table th {
+        .data-table th {
             font-weight: 600;
             color: var(--text-light);
             text-transform: uppercase;
             font-size: 12px;
         }
         
-        .documents-table tr:hover {
+        .data-table tr:hover {
             background-color: var(--sidebar-bg);
         }
 
@@ -590,6 +690,17 @@
         .action-btn .fa-pencil { color: var(--primary-blue); }
         .action-btn .fa-ban { color: var(--status-red); }
         .action-btn .fa-eye { color: var(--text-dark); }
+        .action-btn .fa-file-arrow-down { color: var(--text-dark); }
+        
+        /* NEW: Table Icon Styles */
+        .icon-success {
+            color: var(--status-green);
+            font-size: 18px;
+        }
+        .icon-danger {
+            color: var(--status-red);
+            font-size: 18px;
+        }
         
         /* --- Schedule Page Styles --- */
         .schedule-table-wrapper {
@@ -645,7 +756,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            display: none; /* Hidden by default */
+            display: none; 
             align-items: center;
             justify-content: center;
             z-index: 1000;
@@ -656,12 +767,20 @@
             border-radius: var(--border-radius-lg);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             width: 90%;
-            max-width: 900px; /* Widen modal for A4 page */
+            max-width: 900px; 
             height: 80%;
             max-height: 800px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+        
+        /* NEW: Export Modal sizing */
+        #export-modal-overlay .modal-content {
+            width: 90%;
+            max-width: 600px;
+            height: auto;
+            max-height: 90vh;
         }
         
         .modal-header {
@@ -691,15 +810,21 @@
         }
         
         .modal-body {
-            padding: 20px; /* Give space around the page */
+            padding: 24px; 
             overflow-y: auto;
-            background-color: var(--light-grey-bg); /* Grey background for contrast */
-            font-family: 'Inter', sans-serif; /* Set base font for modal */
+            background-color: var(--white-panel); 
+            font-family: 'Inter', sans-serif; 
             line-height: 1.6;
             color: #333;
         }
         
-        /* NEW: PDF Page Simulation */
+        /* Specific body for PDF preview */
+        .modal-body-preview {
+            padding: 20px;
+            background-color: var(--light-grey-bg);
+        }
+        
+        /* PDF Page Simulation */
         .preview-page {
             background-color: var(--white-panel);
             width: 21cm;
@@ -707,10 +832,9 @@
             padding: 2cm;
             margin: 20px auto;
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
-            box-sizing: border-box; /* Ensure padding is included */
+            box-sizing: border-box; 
         }
         
-        /* NEW: Logo Styles */
         .preview-logo {
             margin-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
@@ -718,7 +842,7 @@
         }
         .preview-logo-exoticca {
             font-family: 'Inter', sans-serif;
-            font-weight: 800; /* Extra bold */
+            font-weight: 800; 
             font-size: 36px;
             color: var(--primary-black);
             letter-spacing: -1px;
@@ -729,19 +853,19 @@
             font-weight: 500;
             font-size: 14px;
             color: var(--text-light);
-            letter-spacing: 2px; /* Wide spacing */
+            letter-spacing: 2px; 
             text-transform: uppercase;
             margin-top: 4px;
         }
         
         .modal-body h5 {
-            font-family: 'Inter', sans-serif; /* UPDATED */
+            font-family: 'Inter', sans-serif; 
             font-size: 16px;
             font-weight: 700;
             color: var(--primary-black);
             margin-top: 24px;
             margin-bottom: 10px;
-            border-bottom: 1px solid #eee; /* Keep a light separator */
+            border-bottom: 1px solid #eee; 
             padding-bottom: 6px;
             display: flex;
             align-items: center;
@@ -749,19 +873,19 @@
         
         .modal-body h5 .emoji {
             font-size: 1.2em;
-            margin-right: 10px; /* More space for emoji */
+            margin-right: 10px; 
         }
         
         .modal-body p {
             margin-top: 0;
             margin-bottom: 16px;
-            white-space: pre-wrap; /* Preserves line breaks from textareas */
-            font-family: 'Inter', sans-serif; /* UPDATED */
-            font-size: 15px; /* Slightly larger for readability */
+            white-space: pre-wrap; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 15px; 
             line-height: 1.7;
         }
         
-        /* NEW: Preview Table for Schedule */
+        /* Preview Table for Schedule */
         .preview-schedule-table {
             width: 100%;
             border-collapse: collapse;
@@ -781,7 +905,78 @@
             font-weight: 700;
         }
         
-        /* --- Custom Message Box (Replaces alert()) --- */
+        /* NEW: Export Modal Styles */
+        .export-modal-subtitle {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        
+        .export-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .export-checkbox-group {
+            display: flex;
+            align-items: center;
+            background-color: var(--sidebar-bg);
+            padding: 12px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+        }
+        
+        .export-checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+        }
+        .export-checkbox-group label {
+            font-weight: 600;
+        }
+        
+        .export-file-type {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .export-radio-group {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .export-radio-group input[type="radio"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        .export-radio-group label {
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .export-radio-group.selected {
+            border-color: var(--primary-black);
+            background-color: #f0f2f5;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        
+        /* --- Custom Message Box --- */
         .message-box-overlay {
             position: fixed;
             top: 0;
@@ -805,7 +1000,7 @@
         }
         .message-box-icon {
             font-size: 40px;
-            color: #28a745; /* Success green */
+            color: #28a745; 
             margin-bottom: 16px;
         }
         .message-box p {
@@ -818,19 +1013,33 @@
             border-radius: var(--border-radius-pill);
             padding: 10px 24px;
         }
+        
+        /* --- Knowledge Base --- */
+        .knowledge-base-link {
+            position: fixed;
+            bottom: 20px;
+            left: 10px;
+            background-color: var(--primary-black);
+            color: white;
+            padding: 10px 16px;
+            border-radius: var(--border-radius-pill);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
     </style>
 </head>
 <body>
     
-    <!-- NEW: Full Width Header -->
+    <!-- Full Width Header -->
     <header class="page-header">
         <div class="header-logo">
-            <!-- 
-                Placeholder logo. 
-                Replace this div with your <img> tag when you have a hosted URL.
-                e.g., <img src="https://your-url.com/logo.png" alt="Exoticca Logo" height="30">
-            -->
             <div class="header-logo-exoticca">exoticca</div>
             <span class="header-logo-badge">providers</span>
         </div>
@@ -845,28 +1054,24 @@
     <div class="container">
         <!-- --- SIDEBAR --- -->
         <nav class="sidebar">
-            <!-- REMOVED Sidebar Header -->
-            
             <ul class="sidebar-nav">
                 <li class="nav-label">Main Menu</li>
                 <li id="nav-dashboard"><span class="icon"><i class="fa-solid fa-tachometer-alt"></i></span> Dashboard</li>
-                <li id="nav-bookings"><span class="icon"><i class="fa-solid fa-calendar-check"></i></span> Bookings</li>
+                <!-- UPDATED: Added active class -->
+                <li id="nav-bookings" class="active"><span class="icon"><i class="fa-solid fa-calendar-check"></i></span> Bookings</li>
                 <li id="nav-services"><span class="icon"><i class="fa-solid fa-rocket"></i></span> My Services</li>
                 <li id="nav-arrivals"><span class="icon"><i class="fa-solid fa-plane-arrival"></i></span> Arrivals</li>
                 <li id="nav-notifications"><span class="icon"><i class="fa-solid fa-bell"></i></span> Notifications <span style="background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; margin-left: auto;">5</span></li>
                 <li id="nav-feedback"><span class="icon"><i class="fa-solid fa-comments"></i></span> Customer Feedback</li>
                 
-                <!-- UPDATED SECTION -->
                 <li class="nav-label">Tools</li>
-                <!-- UPDATED: Parent Menu Item -->
-                <li id="nav-builder-parent" class="sidebar-nav-parent active-parent">
+                <li id="nav-builder-parent" class="sidebar-nav-parent">
                     <span class="icon"><i class="fa-solid fa-file-pen"></i></span> 
                     Document Builder
                     <span class="icon chevron"><i class="fa-solid fa-chevron-down"></i></span>
                 </li>
-                <!-- NEW: Sub-menu -->
-                <ul class="sidebar-submenu" style="display: block;">
-                    <li id="nav-welcome-letter" class="active">Welcome Letter</li>
+                <ul class="sidebar-submenu">
+                    <li id="nav-welcome-letter">Welcome Letter</li>
                     <li id="nav-schedule">Schedule</li>
                 </ul>
                 
@@ -875,12 +1080,225 @@
                 <li class="coming-soon"><span class="icon"><i class="fa-solid fa-file-signature"></i></span> Contracts <small>(Coming Soon)</small></li>
                 <li class="coming-soon"><span class="icon"><i class="fa-solid fa-headset"></i></span> Live Chat <small>(Coming Soon)</small></li>
             </ul>
+            
+            <!-- NEW: Knowledge Base Link -->
+            <div class="knowledge-base-link">
+                <i class="fa-solid fa-book-open"></i>
+                Knowledge Base
+            </div>
         </nav>
-
-        <!-- --- MAIN CONTENT --- -->
-        <main class="main-content" id="welcome-letter-page">
+        
+        <!-- --- NEW: BOOKINGS PAGE --- -->
+        <main class="main-content" id="bookings-page">
             <div class="content-wrapper">
-                <h2>Create New Welcome Letter</h2>
+                <div class="content-header">
+                    <h2>Bookings List</h2>
+                    <button type="button" id="export-report-btn" class="btn btn-primary">Export Report</button>
+                </div>
+
+                <!-- --- 1. Configuration Section --- -->
+                <div class="config-section">
+                    <details>
+                        <summary>Filters (0)</summary>
+                        <div class="booking-filter-grid">
+                            <!-- Row 1 -->
+                            <div class="form-group">
+                                <label for="filter-my-locator">My Locator</label>
+                                <input type="text" id="filter-my-locator">
+                            </div>
+                            <div class="form-group">
+                                <label for="filter-exoticca-locator">Exoticca Locator</label>
+                                <input type="text" id="filter-exoticca-locator">
+                            </div>
+                            <div class="form-group">
+                                <label for="filter-passenger-name">Passenger Name</label>
+                                <input type="text" id="filter-passenger-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="filter-status">Status</label>
+                                <select id="filter-status">
+                                    <option value="">All</option>
+                                    <option value="valid">Valid</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <!-- Row 2 -->
+                            <div class="form-group form-group-date">
+                                <label for="filter-booked-since">Booked Since</label>
+                                <input type="text" id="filter-booked-since" placeholder="Select date">
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+                            <div class="form-group form-group-date">
+                                <label for="filter-booked-until">Booked Until</label>
+                                <input type="text" id="filter-booked-until" placeholder="Select date">
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+                            <div class="form-group form-group-date">
+                                <label for="filter-service-since">Service since</label>
+                                <input type="text" id="filter-service-since" placeholder="Select date">
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+                            <div class="form-group form-group-date">
+                                <label for="filter-service-until">Service until</label>
+                                <input type="text" id="filter-service-until" placeholder="Select date">
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+                            <!-- Row 3 -->
+                            <div class="form-group">
+                                <label for="filter-market">Market</label>
+                                <input type="text" id="filter-market">
+                            </div>
+                            <div class="form-group">
+                                <label for="filter-service-name">Service name</label>
+                                <input type="text" id="filter-service-name">
+                            </div>
+                            <div class="form-group-toggle" style="align-self: end; padding-bottom: 5px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-hotels-pending">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label for="toggle-hotels-pending">Only with hotels pending</label>
+                            </div>
+                            <div class="form-group-toggle" style="align-self: end; padding-bottom: 5px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-services-pending">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label for="toggle-services-pending">Only with services pending</label>
+                            </div>
+                            <!-- Row 4 -->
+                            <div class="form-group-toggle" style="grid-column: 1 / span 2;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-first-service-date">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label for="toggle-first-service-date">Search by first service date</label>
+                            </div>
+                            
+                            <!-- Row 5: Buttons -->
+                            <div class="filter-button-container">
+                                <button type="button" class="btn-link" id="reset-filters-btn">Reset All</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                
+                <!-- NEW: Upload Document Button -->
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                    <button class="btn btn-secondary" style="font-weight: 500; font-size: 13px; padding: 8px 16px;">
+                        <i class="fa-solid fa-upload" style="margin-right: 8px;"></i>
+                        Upload Document
+                    </button>
+                </div>
+
+                <!-- --- 2. Bookings Table --- -->
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Booking Date</th>
+                                <th>My Locator</th>
+                                <th>Exoticca Locator</th>
+                                <th>Status</th>
+                                <th>Product ID</th>
+                                <th>First Service Date</th>
+                                <th>All Services Confirmed</th>
+                                <th>All Hotels Confirmed</th>
+                                <th>Pax Number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>2025-10-08</td>
+                                <td>Click to add</td>
+                                <td>US-EX2025419095</td>
+                                <td><span class="status-badge status-approved">VALID</span></td>
+                                <td>17436</td>
+                                <td>2026-05-15</td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td>2</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Download"><i class="fa-solid fa-file-arrow-down"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>2025-08-25</td>
+                                <td>Click to add</td>
+                                <td>US-EX202541379</td>
+                                <td><span class="status-badge status-cancelled">CANCELLED</span></td>
+                                <td>17736</td>
+                                <td>2025-10-27</td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td><i class="fa-solid fa-circle-xmark icon-danger"></i></td>
+                                <td>2</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Download"><i class="fa-solid fa-file-arrow-down"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>2025-07-31</td>
+                                <td>Click to add</td>
+                                <td>US-EX2025412880</td>
+                                <td><span class="status-badge status-approved">VALID</span></td>
+                                <td>17736</td>
+                                <td>2026-03-31</td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td>2</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Download"><i class="fa-solid fa-file-arrow-down"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>2025-07-30</td>
+                                <td>Click to add</td>
+                                <td>UA-EX2025412692</td>
+                                <td><span class="status-badge status-approved">VALID</span></td>
+                                <td>21611</td>
+                                <td>2025-10-22</td>
+                                <td><i class="fa-solid fa-circle-xmark icon-danger"></i></td>
+                                <td><i class="fa-solid fa-circle-xmark icon-danger"></i></td>
+                                <td>2</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Download"><i class="fa-solid fa-file-arrow-down"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>2025-07-27</td>
+                                <td>Click to add</td>
+                                <td>ES-EX2025411539</td>
+                                <td><span class="status-badge status-approved">VALID</span></td>
+                                <td>17805</td>
+                                <td>2026-02-22</td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td><i class="fa-solid fa-circle-check icon-success"></i></td>
+                                <td>2</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Download"><i class="fa-solid fa-file-arrow-down"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </main>
+
+        <!-- --- WELCOME LETTER PAGE --- -->
+        <main class="main-content" id="welcome-letter-page" style="display: none;">
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <h2>Create New Welcome Letter</h2>
+                </div>
 
                 <!-- --- 1. Configuration Section --- -->
                 <div class="config-section">
@@ -926,7 +1344,6 @@
                 <!-- --- 2. Content Blocks Form --- -->
                 <form id="welcome-letter-form">
                     
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-file-lines"></i></span> Standard Content (Non-Editable)</summary>
@@ -944,7 +1361,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
                     
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-door-open"></i></span> Introduction & Arrival</summary>
@@ -969,7 +1385,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-user-group"></i></span> Guide & Contacts</summary>
@@ -986,7 +1401,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-bus-simple"></i></span> Trip Transportation</summary>
@@ -1011,7 +1425,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
                     
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-hotel"></i></span> Hotels</summary>
@@ -1032,7 +1445,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-money-bill-wave"></i></span> Currency & Payments</summary>
@@ -1053,7 +1465,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-cloud-sun"></i></span> Weather & Packing</summary>
@@ -1095,7 +1506,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- UPDATED: Collapsible Section -->
                     <div class="form-section">
                         <details open>
                             <summary><span class="icon"><i class="fa-solid fa-utensils"></i></span> Language & Gastronomy</summary>
@@ -1128,7 +1538,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                         </details>
                     </div>
 
-                    <!-- --- 3. Action Buttons --- -->
                     <div class="button-container">
                         <button type="button" id="preview-wl-btn" class="btn btn-secondary">Preview Welcome Letter</button>
                         <button type="submit" id="submit-wl-btn" class="btn btn-primary">Send for Approval</button>
@@ -1138,12 +1547,13 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
             </div>
         </main>
         
-        <!-- --- NEW: SCHEDULE PAGE --- -->
+        <!-- --- SCHEDULE PAGE --- -->
         <main class="main-content" id="schedule-page" style="display: none;">
             <div class="content-wrapper">
-                <h2>Create New Schedule</h2>
+                <div class="content-header">
+                    <h2>Create New Schedule</h2>
+                </div>
 
-                <!-- --- 1. Configuration Section --- -->
                 <div class="config-section">
                     <details open>
                         <summary>Configuration</summary>
@@ -1184,7 +1594,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     </details>
                 </div>
                 
-                <!-- --- 2. Schedule Builder Form --- -->
                 <form id="schedule-form">
                     <h3><span class="icon"><i class="fa-solid fa-calendar-days"></i></span> Daily Itinerary</h3>
                     <div class="schedule-table-wrapper">
@@ -1209,7 +1618,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                          <button type="button" id="add-day-btn" class="btn btn-add"><i class="fa-solid fa-plus"></i> Add Day</button>
                     </div>
 
-                    <!-- --- 3. Action Buttons --- -->
                     <div class="button-container">
                         <button type="button" id="preview-schedule-btn" class="btn btn-secondary">Preview Schedule</button>
                         <button type="submit" id="submit-schedule-btn" class="btn btn-primary">Send for Approval</button>
@@ -1222,78 +1630,138 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
         <!-- --- DOCUMENTS PAGE --- -->
         <main class="main-content" id="documents-page" style="display: none;">
             <div class="content-wrapper">
-                <h2>My Documents</h2>
+                <div class="content-header">
+                    <h2>My Documents</h2>
+                </div>
                 
-                <table class="documents-table">
-                    <thead>
-                        <tr>
-                            <th>Document Name</th>
-                            <th>Itineraries</th>
-                            <th>Language</th>
-                            <th>Status</th>
-                            <th>Last Update</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Norway Welcome Letter</strong></td>
-                            <td>N-123, N-456</td>
-                            <td>English</td>
-                            <td><span class="status-badge status-review">In Review</span></td>
-                            <td>2025-10-31</td>
-                            <td class="action-btn-group">
-                                <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
-                                <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Spain Welcome Letter</strong></td>
-                            <td>S-789</td>
-                            <td>Spanish</td>
-                            <td><span class="status-badge status-approved">Approved</span></td>
-                            <td>2025-10-28</td>
-                            <td class="action-btn-group">
-                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
-                                <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Italy Itinerary Notes</strong></td>
-                            <td>I-101</td>
-                            <td>English</td>
-                            <td><span class="status-badge status-progress">In Progress</span></td>
-                            <td>2025-10-30</td>
-                            <td class="action-btn-group">
-                                <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
-                            </td>
-                        </tr>
-                         <tr>
-                            <td><strong>Norway Welcome Letter (Old)</strong></td>
-                            <td>N-123</td>
-                            <td>English</td>
-                            <td><span class="status-badge status-cancelled">Cancelled</span></td>
-                            <td>2025-09-15</td>
-                            <td class="action-btn-group">
-                                <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>Itineraries</th>
+                                <th>Language</th>
+                                <th>Status</th>
+                                <th>Last Update</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Norway Welcome Letter</strong></td>
+                                <td>N-123, N-456</td>
+                                <td>English</td>
+                                <td><span class="status-badge status-review">In Review</span></td>
+                                <td>2025-10-31</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
+                                    <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Spain Welcome Letter</strong></td>
+                                <td>S-789</td>
+                                <td>Spanish</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
+                                <td>2025-10-28</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                    <button class="action-btn" title="Cancel"><i class="fa-solid fa-ban"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Italy Itinerary Notes</strong></td>
+                                <td>I-101</td>
+                                <td>English</td>
+                                <td><span class="status-badge status-progress">In Progress</span></td>
+                                <td>2025-10-30</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="Amend"><i class="fa-solid fa-pencil"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td><strong>Norway Welcome Letter (Old)</strong></td>
+                                <td>N-123</td>
+                                <td>English</td>
+                                <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                                <td>2025-09-15</td>
+                                <td class="action-btn-group">
+                                    <button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
             </div>
         </main>
     </div>
     
-    <!-- --- PREVIEW MODAL --- -->
+    <!-- --- PREVIEW MODAL (Used by WL & Schedule) --- -->
     <div class="modal-overlay" id="preview-modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 id="preview-modal-title">Welcome Letter Preview</h4>
                 <button class="modal-close-btn" id="modal-close-btn" type="button">&times;</button>
             </div>
-            <div class="modal-body" id="modal-body-content">
+            <div class="modal-body modal-body-preview" id="modal-body-content">
                 <!-- Content will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- --- NEW: EXPORT OPTIONS MODAL --- -->
+    <div class="modal-overlay" id="export-modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="export-modal-title">Customize your export</h4>
+                <button class="modal-close-btn" id="export-modal-close-btn" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="export-modal-subtitle">Select the sections you want to include in your report.</p>
+                
+                <div class="export-options-grid">
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-booking-info" checked>
+                        <label for="check-booking-info">Booking Info</label>
+                    </div>
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-hotels">
+                        <label for="check-hotels">Hotels</label>
+                    </div>
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-flights">
+                        <label for="check-flights">Flights</label>
+                    </div>
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-passenger">
+                        <label for="check-passenger">Passenger Details</label>
+                    </div>
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-services">
+                        <label for="check-services">Services</label>
+                    </div>
+                    <div class="export-checkbox-group">
+                        <input type="checkbox" id="check-internal-notes">
+                        <label for="check-internal-notes">Internal Notes</label>
+                    </div>
+                </div>
+                
+                <div class="export-file-type">
+                    <div class="export-radio-group selected" id="radio-group-csv">
+                        <input type="radio" id="radio-csv" name="file-type" value="csv" checked>
+                        <label for="radio-csv">Export as CSV</label>
+                    </div>
+                    <div class="export-radio-group" id="radio-group-excel">
+                        <input type="radio" id="radio-excel" name="file-type" value="excel">
+                        <label for="radio-excel">Export as Excel</label>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="export-cancel-btn">Cancel</button>
+                    <button class="btn btn-primary" id="export-generate-btn">Generate Report</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1316,19 +1784,25 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
             const navWelcomeLetter = document.getElementById('nav-welcome-letter');
             const navSchedule = document.getElementById('nav-schedule');
             const navDocuments = document.getElementById('nav-documents');
+            const navBookings = document.getElementById('nav-bookings'); // NEW
             
             const pageWelcomeLetter = document.getElementById('welcome-letter-page');
             const pageSchedule = document.getElementById('schedule-page');
             const pageDocuments = document.getElementById('documents-page');
+            const pageBookings = document.getElementById('bookings-page'); // NEW
             
             const sidebarLinks = document.querySelectorAll('.sidebar-nav > li');
             const sidebarSubLinks = document.querySelectorAll('.sidebar-submenu li');
+            
+            // Default page on load
+            showPage('bookings');
 
             function showPage(pageToShow) {
                 // Hide all main pages
                 pageWelcomeLetter.style.display = 'none';
                 pageSchedule.style.display = 'none';
                 pageDocuments.style.display = 'none';
+                pageBookings.style.display = 'none'; // NEW
                 
                 // Remove active class from all nav items
                 sidebarLinks.forEach(link => link.classList.remove('active', 'active-parent'));
@@ -1349,33 +1823,37 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                 } else if (pageToShow === 'documents') {
                     pageDocuments.style.display = 'block';
                     navDocuments.classList.add('active');
+                } else if (pageToShow === 'bookings') { // NEW
+                    pageBookings.style.display = 'block';
+                    navBookings.classList.add('active');
                 }
             }
 
             navBuilderParent.addEventListener('click', () => {
-                // This just toggles the sub-menu if it's already on a child page
                 if (navBuilderParent.classList.contains('active-parent')) {
                     navSubmenu.style.display = navSubmenu.style.display === 'block' ? 'none' : 'block';
-                    navBuilderParent.classList.toggle('active-parent'); // Visual toggle
+                    navBuilderParent.classList.toggle('active-parent'); 
                 } else {
-                    // If clicking from another page, default to welcome letter
                     showPage('welcome-letter');
                 }
             });
             
             navWelcomeLetter.addEventListener('click', (e) => {
-                 e.stopPropagation(); // Prevent parent click
+                 e.stopPropagation(); 
                  showPage('welcome-letter');
             });
             navSchedule.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent parent click
+                e.stopPropagation(); 
                 showPage('schedule');
             });
             navDocuments.addEventListener('click', () => showPage('documents'));
+            navBookings.addEventListener('click', () => showPage('bookings')); // NEW
+            // Add other nav links here...
+            document.getElementById('nav-dashboard').addEventListener('click', () => { /* showPage('dashboard') */ });
             
             // --- Modal Elements ---
-            const modalOverlay = document.getElementById('preview-modal-overlay');
-            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const previewModalOverlay = document.getElementById('preview-modal-overlay');
+            const previewModalCloseBtn = document.getElementById('modal-close-btn');
             const modalBody = document.getElementById('modal-body-content');
             const modalTitle = document.getElementById('preview-modal-title');
             
@@ -1385,11 +1863,11 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
 
             // --- Function to close Preview Modal ---
             function closeModal() {
-                modalOverlay.style.display = 'none';
+                previewModalOverlay.style.display = 'none';
             }
-            modalCloseBtn.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
+            previewModalCloseBtn.addEventListener('click', closeModal);
+            previewModalOverlay.addEventListener('click', function(e) {
+                if (e.target === previewModalOverlay) {
                     closeModal();
                 }
             });
@@ -1399,7 +1877,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                 document.getElementById('message-box-text').textContent = text;
                 messageOverlay.style.display = 'flex';
                 
-                // Handle OK button click
                 messageCloseBtn.onclick = function() {
                     closeMessage();
                     if (callback) callback();
@@ -1409,7 +1886,7 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
             // --- Function to close Message Box ---
             function closeMessage() {
                 messageOverlay.style.display = 'none';
-                messageCloseBtn.onclick = null; // Clear old callback
+                messageCloseBtn.onclick = null; 
             }
             messageOverlay.addEventListener('click', function(e) {
                 if (e.target === messageOverlay) {
@@ -1417,6 +1894,41 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     if (messageCloseBtn.onclick) messageCloseBtn.onclick();
                 }
             });
+            
+            // --- EXPORT MODAL LOGIC (NEW) ---
+            (function() {
+                const exportBtn = document.getElementById('export-report-btn');
+                const exportModal = document.getElementById('export-modal-overlay');
+                const exportCloseBtn = document.getElementById('export-modal-close-btn');
+                const exportCancelBtn = document.getElementById('export-cancel-btn');
+                const exportGenerateBtn = document.getElementById('export-generate-btn');
+                const radioGroups = document.querySelectorAll('.export-radio-group');
+                
+                function openExportModal() {
+                    exportModal.style.display = 'flex';
+                }
+                
+                function closeExportModal() {
+                    exportModal.style.display = 'none';
+                }
+                
+                exportBtn.addEventListener('click', openExportModal);
+                exportCloseBtn.addEventListener('click', closeExportModal);
+                exportCancelBtn.addEventListener('click', closeExportModal);
+                
+                exportGenerateBtn.addEventListener('click', () => {
+                    closeExportModal();
+                    showMessage("Your report is generating and will download shortly.");
+                });
+                
+                radioGroups.forEach(group => {
+                    group.addEventListener('click', () => {
+                        radioGroups.forEach(g => g.classList.remove('selected'));
+                        group.classList.add('selected');
+                        group.querySelector('input[type="radio"]').checked = true;
+                    });
+                });
+            })();
             
             // --- WELCOME LETTER LOGIC ---
             (function() {
@@ -1454,7 +1966,7 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
 
                 previewBtn_WL.addEventListener('click', function() {
                     modalTitle.textContent = "Welcome Letter Preview";
-                    modalBody.innerHTML = ''; // Clear everything first
+                    modalBody.innerHTML = ''; 
                     const partnerName = document.getElementById('wl-letter-partner').value || '[Your Partner Name]';
                     
                     let pageHTML = '<div class="preview-page">';
@@ -1501,7 +2013,7 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     pageHTML += '</div>';
                     
                     modalBody.innerHTML = pageHTML;
-                    modalOverlay.style.display = 'flex';
+                    previewModalOverlay.style.display = 'flex';
                 });
                 
                 form_WL.addEventListener('submit', function(e) {
@@ -1513,7 +2025,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     document.getElementById('wl-letter-partner').value = "Nordis Travel";
                     document.getElementById('content-standard-intro').value = "Exoticca and [Your Partner Name], our local partner, would like to share some important information to help you feel fully prepared and clarify any remaining questions, so you can enjoy your experience with total peace of mind.";
                     document.getElementById('content-standard-app').value = "If you booked your trip directly with Exoticca, this Welcome Letter serves as a complementary guide to the Exoticca: Travelers' App, available on Android and iOS.\nWe recommend downloading the Exoticca app, where you can access your Exoticca Trip Summary and have all your trip details at hand for any inquiries.";
-                    // Open all details sections
                     document.querySelectorAll('#welcome-letter-page details').forEach(d => d.open = true);
                 });
             })();
@@ -1542,11 +2053,9 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                 
                 addDayBtn.addEventListener('click', addDayRow);
                 
-                // Event delegation for remove buttons
                 tableBody.addEventListener('click', function(e) {
                     if (e.target && (e.target.classList.contains('remove-day-btn') || e.target.closest('.remove-day-btn'))) {
                         e.target.closest('tr').remove();
-                        // Renumber days
                         dayCounter = 0;
                         tableBody.querySelectorAll('.day-input').forEach(input => {
                             dayCounter++;
@@ -1555,12 +2064,11 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     }
                 });
                 
-                // Add one day by default
                 addDayRow();
 
                 previewBtn_Schedule.addEventListener('click', function() {
                     modalTitle.textContent = "Schedule Preview";
-                    modalBody.innerHTML = ''; // Clear everything first
+                    modalBody.innerHTML = ''; 
                     const partnerName = document.getElementById('sched-letter-partner').value || '[Your Partner Name]';
                     
                     let pageHTML = '<div class="preview-page">';
@@ -1572,7 +2080,6 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     `;
                     pageHTML += `<h5><span class="emoji">🗓️</span> Daily Schedule</h5>`;
                     
-                    // Build table
                     pageHTML += '<table class="preview-schedule-table"><thead><tr>';
                     pageHTML += '<th>Day</th><th>City</th><th>Pickup Place</th><th>Pickup Time</th><th>Summary</th>';
                     pageHTML += '</tr></thead><tbody>';
@@ -1598,7 +2105,7 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
                     pageHTML += '</div>';
                     
                     modalBody.innerHTML = pageHTML;
-                    modalOverlay.style.display = 'flex';
+                    previewModalOverlay.style.display = 'flex';
                 });
                 
                 form_Schedule.addEventListener('submit', function(e) {
@@ -1620,4 +2127,3 @@ We recommend downloading the Exoticca app, where you can access your Exoticca Tr
 
 </body>
 </html>
-
